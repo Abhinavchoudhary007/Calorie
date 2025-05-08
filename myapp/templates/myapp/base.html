@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Calorie Tracker by ABHINAV{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        nav.navbar {
+            /* Removed border */
+            border: none;
+        }
+        footer {
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            text-align: center;
+            border-top: 1px solid #e7e7e7;
+            margin-top: 20px;
+        }
+        footer a {
+            margin: 0 10px;
+            color: inherit;
+        }
+        footer a:hover {
+            text-decoration: none;
+        }
+        footer img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body style="padding-top: 70px;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-rounded-lg fixed-top">
+        <a class="navbar-brand" href="/">
+            <img src="https://cdn2.iconfinder.com/data/icons/custom-ios-14-1/60/Activity-1024.png" width="30" height="30" class="d-inline-block align-top" alt="Calorie Tracker Logo">
+            <b>Calorie Tracker by ABHINAV</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item d-flex align-items-center mx-1">
+                    <span class="navbar-text mr-2">Hello, {{ request.user.username }}</span>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link btn btn-outline-danger rounded mx-1" style="cursor:pointer;">Logout</button>
+                    </form>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-primary rounded mx-1" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-success rounded mx-1" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+                {% if request.resolver_match.url_name == 'index' %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success rounded text-white mx-1" href="#todays-consumption"><b>Today's Report</b></a>
+                </li>
+                {% endif %}
+                {% if request.resolver_match.url_name != 'add_item' and request.resolver_match.url_name != 'food_list' %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success rounded text-white mx-1" href="{% url 'add_item' %}"><b>Add New Item</b></a>
+                </li>
+                {% endif %}
+                {% if request.resolver_match.url_name != 'food_list' %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success rounded text-white mx-1" href="{% url 'food_list' %}"><b>Food Items</b></a>
+                </li>
+                {% endif %}
+                {% if request.resolver_match.url_name != 'set_goal' %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success rounded text-white mx-1" href="{% url 'set_goal' %}"><b>Set Calorie Goal</b></a>
+                </li>
+                {% endif %}
+                {% if request.resolver_match.url_name != 'report' %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success rounded text-white mx-1" href="{% url 'report' %}"><b>Report</b></a>
+                </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        Made by Abhinav Choudhary
+        <a href="https://www.linkedin.com/in/abhinav-choudhary-09844a1bb/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+        </a>
+        <a href="https://github.com/Abhinavchoudhary007" target="_blank" rel="noopener noreferrer" title="GitHub">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+        </a>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
